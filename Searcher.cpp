@@ -33,32 +33,34 @@ void Searcher::tryToSearch(std::string &searchResult, const std::string &toFind)
 }
 
 void Searcher::tryToSearch(const std::string &toFind) {
+    mutexQueueLocker.lock();
+
+    std::string searchResult;
+
     if (not queueToSearch.empty()) {
-        std::string searchResult = getFirstQueueElement();
+        searchResult = getFirstQueueElement();
         removeFromQueue(searchResult);
     }
-
-    std::string searchResult = "/Users/lamens";
+    else {
+        searchResult = originPath;
+    }
 
     try {
         searchResult = searchForFile(searchResult, toFind);
     }
     catch (std::filesystem::filesystem_error const& ex) {
         queueToSearch.erase(searchResult);
-        searchResult = *queueToSearch.begin();
     }
+
+    mutexQueueLocker.unlock();
 }
 
 void Searcher::insertIntoQueue(const std::string &path_to_add) {
-    mutexQueueLocker.lock();
     queueToSearch.insert(path_to_add);
-    mutexQueueLocker.unlock();
 }
 
 void Searcher::removeFromQueue(const std::string &path_to_remove) {
-    mutexQueueLocker.lock();
     queueToSearch.erase(path_to_remove);
-    mutexQueueLocker.unlock();
 }
 
 bool Searcher::isQueueEmpty() {

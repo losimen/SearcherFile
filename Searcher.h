@@ -9,18 +9,26 @@
 #include <set>
 #include <fstream>
 #include <mutex>
+#include <utility>
 
 
 class Searcher {
 private:
     std::mutex mutexQueueLocker;
     std::set<std::string> queueToSearch;
+
     std::string result;
+    std::string originPath;
+
     bool isFound;
 
     std::string searchForFile(const std::string &searchIn, const std::string &toFind);
+
+    void insertIntoQueue(const std::string &path_to_add);
+    void removeFromQueue(const std::string &path_to_remove);
 public:
-    Searcher() {
+    Searcher() = delete;
+    explicit Searcher(std::string _originPath): originPath(std::move(_originPath)) {
         isFound = false;
         result = "none";
     }
@@ -28,8 +36,6 @@ public:
     void tryToSearch(std::string& searchResult, const std::string& toFind);
     void tryToSearch(const std::string& toFind);
 
-    void insertIntoQueue(const std::string &path_to_add);
-    void removeFromQueue(const std::string &path_to_remove);
     std::string getFirstQueueElement();
     bool isQueueEmpty();
 
