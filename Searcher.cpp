@@ -34,20 +34,20 @@ void Searcher::tryToSearch(std::string &searchResult, const std::string &toFind)
 
 void Searcher::tryToSearch(const std::string &toFind) {
     mutexQueueLocker.lock();
-
     std::string searchResult;
 
     if (not queueToSearch.empty()) {
+        searchResult = getFirstQueueElement();
+        removeFromQueue(searchResult);
+    }
+    else {
         if (isOriginBegun)
             isFound = true;
 
-        searchResult = getFirstQueueElement();
-        removeFromQueue(searchResult);
+        searchResult = originPath;
         isOriginBegun = true;
     }
-    else {
-        searchResult = originPath;
-    }
+
 
     try {
         searchResult = searchForFile(searchResult, toFind);
