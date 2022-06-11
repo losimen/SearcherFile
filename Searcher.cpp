@@ -38,8 +38,12 @@ void Searcher::tryToSearch(const std::string &toFind) {
     std::string searchResult;
 
     if (not queueToSearch.empty()) {
+        if (isOriginBegun)
+            isFound = true;
+
         searchResult = getFirstQueueElement();
         removeFromQueue(searchResult);
+        isOriginBegun = true;
     }
     else {
         searchResult = originPath;
@@ -61,10 +65,6 @@ void Searcher::insertIntoQueue(const std::string &path_to_add) {
 
 void Searcher::removeFromQueue(const std::string &path_to_remove) {
     queueToSearch.erase(path_to_remove);
-}
-
-bool Searcher::isQueueEmpty() {
-    return queueToSearch.empty();
 }
 
 std::string Searcher::getFirstQueueElement() {

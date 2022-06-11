@@ -12,7 +12,7 @@ void searchWithThreads(Searcher &searcher, const std::string &toFind) {
 
 int main() {
     const int amountOfThreads = 9;
-    const std::string originPath = "/Users/lamens";
+    const std::string originPath = "/Users/lamens/Desktop/lol";
     const std::string toFind = "README2.md";
 
     std::thread threads[amountOfThreads];

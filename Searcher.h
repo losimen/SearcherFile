@@ -21,6 +21,7 @@ private:
     std::string originPath;
 
     bool isFound;
+    bool isOriginBegun;
 
     std::string searchForFile(const std::string &searchIn, const std::string &toFind);
 
@@ -30,6 +31,7 @@ public:
     Searcher() = delete;
     explicit Searcher(std::string _originPath): originPath(std::move(_originPath)) {
         isFound = false;
+        isOriginBegun = false;
         result = "none";
     }
 
